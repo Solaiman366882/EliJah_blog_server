@@ -35,6 +35,7 @@ async function run() {
     const database = client.db("elijahBlogDB");
     const blogCollection = database.collection("blogs");
     const newsletterCollection = database.collection("newsletter");
+    const wishlistCollection = database.collection("wishlist");
     
     //post a single blog
     app.post('/blogs',async(req,res) => {
@@ -56,6 +57,18 @@ async function run() {
         const result = await newsletterCollection.insertOne(newsletterUser);
         res.send(result);
     })
+    //get users wishlist blogs
+    app.get("/wishlist", async (req, res) => {
+        let query = {};
+        if (req.query?.email) {
+            query = {
+                email: req.query.email,
+            };
+        }
+        const cursor = wishlistCollection.find(query);
+        const result = await cursor.toArray();
+        res.send(result);
+    });
 
     // ************************* Database Operation End **************************
 
