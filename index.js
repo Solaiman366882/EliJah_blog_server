@@ -34,6 +34,7 @@ async function run() {
 
     const database = client.db("elijahBlogDB");
     const blogCollection = database.collection("blogs");
+    const newsletterCollection = database.collection("newsletter");
     
     //post a single blog
     app.post('/blogs',async(req,res) => {
@@ -41,11 +42,19 @@ async function run() {
         const result =  await blogCollection.insertOne(newBlog);
         res.send(result);
     })
-    //
+
+    //get all blogs data
     app.get('/blogs',async(req,res) => {
         const cursor = blogCollection.find();
         const  result = await cursor.toArray();
         res.send(result)
+    })
+
+    //make newsletter user
+    app.post('/newsLetter', async (req,res) => {
+        const newsletterUser = req.body;
+        const result = await newsletterCollection.insertOne(newsletterUser);
+        res.send(result);
     })
 
     // ************************* Database Operation End **************************
