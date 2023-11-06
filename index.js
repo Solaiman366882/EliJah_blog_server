@@ -41,6 +41,12 @@ async function run() {
         const result =  await blogCollection.insertOne(newBlog);
         res.send(result);
     })
+    //
+    app.get('/blogs',async(req,res) => {
+        const cursor = blogCollection.find();
+        const  result = await cursor.toArray();
+        res.send(result)
+    })
 
     // ************************* Database Operation End **************************
 
