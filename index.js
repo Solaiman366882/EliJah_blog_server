@@ -57,6 +57,12 @@ async function run() {
         const result = await newsletterCollection.insertOne(newsletterUser);
         res.send(result);
     })
+    //add to users wishlist
+    app.post("/wishlist", async (req, res) => {
+        const wishedBlog = req.body;
+        const result = await wishlistCollection.insertOne(wishedBlog);
+        res.send(result);
+    });
     //get users wishlist blogs
     app.get("/wishlist", async (req, res) => {
         let query = {};
