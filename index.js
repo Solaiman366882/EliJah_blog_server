@@ -9,8 +9,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-//hAzj8qHiasW4EhNh
-//elijahBlog
 
 // ************************ MongoDB Connection and Operation Start **************************
 
@@ -30,6 +28,24 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+
+
+    // ************************* Database Operation Start **************************
+
+    const database = client.db("elijahBlogDB");
+    const blogCollection = database.collection("blogs");
+    
+    //post a single blog
+    app.post('/blogs',async(req,res) => {
+        const newBlog = req.body;
+        const result =  await blogCollection.insertOne(newBlog);
+        res.send(result);
+    })
+
+    // ************************* Database Operation End **************************
+
+
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
