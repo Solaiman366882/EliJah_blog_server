@@ -113,11 +113,19 @@ async function run() {
 			let query = {};
 			if (req.query?.email) {
 				query = {
-					email: req.query.email,
+					wishlistOwner: req.query.email,
 				};
 			}
 			const cursor = wishlistCollection.find(query);
 			const result = await cursor.toArray();
+			res.send(result);
+		});
+
+    //Delete a single Wishlist
+    app.delete("/wishlist/:id", async (req, res) => {
+			const id = req.params.id;
+			const query = { _id: new ObjectId(id) };
+			const result = await wishlistCollection.deleteOne(query);
 			res.send(result);
 		});
 
