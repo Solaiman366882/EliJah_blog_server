@@ -12,7 +12,7 @@ app.use(express.json());
 
 // ************************ MongoDB Connection and Operation Start **************************
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ea4znei.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -36,6 +36,7 @@ async function run() {
     const blogCollection = database.collection("blogs");
     const newsletterCollection = database.collection("newsletter");
     const wishlistCollection = database.collection("wishlist");
+    const commentCollection = database.collection("comments");
     
     //post a single blog
     app.post('/blogs',async(req,res) => {
@@ -44,11 +45,26 @@ async function run() {
         res.send(result);
     })
 
+    //add a single comment to database
+    app.post('/comments', async(req,res) => {
+      const newComments = req.body;
+      const result = await commentCollection.insertOne(newComments)
+      res.send(result)
+    })
+
     //get all blogs data
     app.get('/blogs',async(req,res) => {
         const cursor = blogCollection.find();
         const  result = await cursor.toArray();
         res.send(result)
+    })
+
+    //get a single blog using id
+    app.get('/blog/:id', async(req,res) => {
+      const id = req.params.id;
+      const query = {_id :new ObjectId(id)};
+      const result = await blogCollection.findOne(query);
+      res.send(result)
     })
 
     //make newsletter user
