@@ -52,6 +52,21 @@ async function run() {
       res.send(result)
     })
 
+    //get specific blog comments
+    app.get('/comments',async (req,res) => {
+      let query = {}
+      if(req.query?.blog_id)
+      {
+        query = {
+          blog_id :req.query.blog_id
+        }
+      }
+      const cursor = commentCollection.find(query);
+      const result = await cursor.toArray();
+      console.log(result);
+      res.send(result)
+    })
+
     //get all blogs data
     app.get('/blogs',async(req,res) => {
         const cursor = blogCollection.find();
