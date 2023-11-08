@@ -85,15 +85,19 @@ async function run() {
 			const updateInfo = req.body;
 			const updatedBlog = {
 				$set: {
-					title : updateInfo.title,
+					title: updateInfo.title,
 					blogImg: updateInfo.blogImg,
 					shortDescription: updateInfo.shortDescription,
-					category:updateInfo.category,
-					description : updateInfo.description,
+					category: updateInfo.category,
+					description: updateInfo.description,
 				},
 			};
-      const result = await blogCollection.updateOne(filter,updatedBlog,options);
-      res.send(result)
+			const result = await blogCollection.updateOne(
+				filter,
+				updatedBlog,
+				options
+			);
+			res.send(result);
 		});
 
 		//make newsletter user
@@ -121,8 +125,8 @@ async function run() {
 			res.send(result);
 		});
 
-    //Delete a single Wishlist
-    app.delete("/wishlist/:id", async (req, res) => {
+		//Delete a single Wishlist
+		app.delete("/wishlist/:id", async (req, res) => {
 			const id = req.params.id;
 			const query = { _id: new ObjectId(id) };
 			const result = await wishlistCollection.deleteOne(query);
